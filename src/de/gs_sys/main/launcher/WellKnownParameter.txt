@@ -1,0 +1,7 @@
+-h = human
+man = manual
+version = version info
+author = author info
+license = GPL / All rights reserved / ...
+readme = info program
+help = cli help

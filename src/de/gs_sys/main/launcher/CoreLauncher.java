@@ -18,7 +18,7 @@ public class CoreLauncher {
     /* ENABLE_FUNCTION */
 
     public static final boolean hasDeamon = true;
-    public static final boolean hasFxSupport = true;
+    public static final boolean checkFxSupport = true;
     public static final boolean isPortAvailable = true;
     public static final boolean hasWebFrontend = true;
     public static final boolean castCommandLineParameter = true;
@@ -50,6 +50,7 @@ public class CoreLauncher {
 
     /* VALUES */
 
+    public static boolean hasFxSupport;
     public static HashMap<String,String> commandlineParameterWithValues = new HashMap<>();
     public static HashSet<String> commandlineParameter = new HashSet<>();
     public static String JAR_PATH = null;
@@ -68,6 +69,20 @@ public class CoreLauncher {
             if(debugOutputEnabled)
             {
                 System.out.println("JAR_PATH = " + JAR_PATH);
+            }
+        }
+
+        if(checkFxSupport)
+        {
+            try {
+                CoreLauncher.class.getClassLoader().loadClass("javafx.application.Application");
+                hasFxSupport = true;
+            } catch (ClassNotFoundException e) {
+                hasFxSupport = false;
+            }
+            if(debugOutputEnabled)
+            {
+                System.out.println("hasFxSupport = " + hasFxSupport);
             }
         }
     }
@@ -95,8 +110,10 @@ public class CoreLauncher {
             args = new String[]{
                     "key-gen",
                     "rsa",
+                    "-s",
+                    "aa\"dd",
                     "-o",
-                    "T:\\test.pem",
+                    "\"\"\"T:\\test.pem\"\"",
                     "-e",
                     "demo"
             };
@@ -137,6 +154,10 @@ public class CoreLauncher {
 
         String cachedParameterKey = null;
         for (int i = 0; i < pointerLimit;) {
+
+            // trim [ "']
+            args[i] = args[i].trim().replaceAll("(^\"+|^'+|\"+$|'+$)","");
+
             if(phaseSubFunctions)
             {
                 if(args[i].charAt(0) == '-')
