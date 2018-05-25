@@ -113,6 +113,10 @@ public class CoreLauncher {
         }
     }
 
+    /**
+     * Casts all parameters to a HashSet or HashMap
+     * @param args The original or modified args form the main function
+     */
     private static void castCommandLineParameters(String[] args) {
 
         if(args.length == 0)
